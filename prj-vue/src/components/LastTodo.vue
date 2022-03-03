@@ -1,46 +1,52 @@
 <template>
   <div>
     <div>list-day</div>
-      <ul v-for="(days) in days" v-bind:key="days.time" >
+    <div>dddd:{{dddd}}</div>
+    <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+      <ul v-for="(propsList) in propsList" :key="propsList.todoText" v-if="dddd || getPropsDay()">
+        <li>
+          <span>{{propsList.todoText}}</span>
+        </li>
+      </ul>
+<!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+      <!-- <ul v-for="(days) in days" v-bind:key="days.time" >
         <div>
           <li class="dropdown">
             <span>{{days.time}}</span>
-            <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
             
               <i class="fa-solid fa-angle-up upbtn" v-if=" toggleOnOff != false" v-on:click="getUpBtn" ></i>
               <i class="fa-solid fa-angle-down downBtn" v-on:click="getListDay(days)" v-else ></i>
             
-            <!-- <i class="fa-solid fa-angle-up upbtn" v-if="toggleOnOff != false" v-on:click="getUpBtn"></i>
-            <i class="fa-solid fa-angle-down downBtn" v-on:click="getListDay(days)" v-else ></i> -->
           </li>
           <div class="dropdownList">
-            <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+           
             <div  v-for="(dayList, index) in dayList" v-bind:key="dayList.todoText" v-if="days.time == dayList.time" class="drop-content" v-bind:class="{clickDropContent:!toggleOnOff}">
-              <!-- checkbox -->
+              
               <i class="fa-solid fa-check checkBtn"  v-bind:class="{checkBtnCompleted: dayList.completed}" v-on:click="toggleComplete(dayList,index)" ></i>
               <span v-bind:class="{textCompleted: dayList.completed}">{{dayList.todoText}}</span>
-              <!-- <span >{{dayList.todoText}}</span> -->
-              <!-- 삭제 -->
+              
               <span class="removeBtn" v-on:click="removeTodo(dayList)">
                 <i class="fa-solid fa-trash-can"></i>
               </span>
             </div>
           </div>
         </div>
-        
-      </ul>
+      </ul> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 export default {
-data: function(){
+  props: ['dddd'],
+  
+  data: function(){
     return{
       lastTodo: [],
       days:[],
       dayList:[],
-      toggleOnOff : false
+      toggleOnOff : false,
+      propsList:[],
     }
   },
   
@@ -60,6 +66,7 @@ data: function(){
     },
     //select 일별 list
     getListDay(days){
+      // console.log('dddd',dddd.time);
       axios.get(`http://localhost:8080/api/todo/list/day/select/${days.time}`)
       .then((res) => {
         // console.log('dayList:', res.data);
@@ -70,9 +77,24 @@ data: function(){
       })
       this.toggleOnOff = true;
     },
+    getPropsDay(){
+      console.log('dddd',this.dddd);
+      axios.get(`http://localhost:8080/api/todo/list/day/select/${this.dddd}`)
+      .then((res) => {
+        console.log('propslist!!:', res.data);
+        // console.log('dddd',this.dddd);
+        this.propsList = res.data;
+        console.log('propsList',this.propsList);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    },
+
     getUpBtn(){
       this.toggleOnOff = false;
     },
+
     toggleComplete: function(dayList,i) {
       // console.log('completed',dayList.completed);
       // console.log('!completed',!dayList.completed);
@@ -106,6 +128,7 @@ data: function(){
   },
   mounted(){
     this.getDay()
+    this.getPropsDay();
   }
 }
 </script>

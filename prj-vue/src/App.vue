@@ -1,65 +1,54 @@
 <template>
   <div id="app">
-    <h1>To Do List</h1>
-    <NowTime></NowTime>
-    <TodoInput></TodoInput>
+    <!-- <router-link to="/login">LoginPage</router-link> -->
+    <!-- <h1>To Do List</h1> -->
+    <div class="app-view">
+      <NowTime v-on:todayProps="dayday"></NowTime>
+      <TodoPage v-bind:daydata="newTodays"></TodoPage>
+      <!-- <TodoPage>
+        <router-view></router-view>
+      </TodoPage> -->
+    </div>
+    
+    <!-- <TodoInput></TodoInput>
     <TodoList></TodoList>
     <TodoFooter></TodoFooter>
-    <LastTodo></LastTodo>
-
-    <!-- <div v-for="(value, i) in data" :key=i>
-      <div>{{value.id}}</div>
-      <div>{{value.todoText}}</div>
-      <div>{{value.time}}</div>
-    </div> -->
+    <LastTodo></LastTodo> -->
+    
     
   </div>
 </template>
 
 <script>
-// import Vue from 'vue';
-
+/*eslint-disable */
 import NowTime from './components/NowTime.vue';
-import TodoInput from './components/TodoInput.vue';
-import TodoList from './components/TodoList.vue';
-import TodoFooter from './components/TodoFooter.vue';
-import LastTodo from './components/LastTodo.vue';
-// import data from './data/index'
-
-// import axios from 'axios';
-// Vue.prototype.$axios = axios;
+// import TodoInput from './components/TodoInput.vue';
+// import TodoList from './components/TodoList.vue';
+// import TodoFooter from './components/TodoFooter.vue';
+// import LastTodo from './components/LastTodo.vue';
+import TodoPage from './components/TodoPage.vue';
 export default {
-  // name: 'TodoList',
-  // data() {
-  //   return{
-  //     data: data
-  //   }
-  // }
+  
   components: {
     NowTime,
-    TodoInput,
-    TodoList,
-    TodoFooter,
-    LastTodo
+    TodoPage
+    // TodoInput,
+    // TodoList,
+    // TodoFooter,
+    // LastTodo
   },
-  // methods: {
-  //   getList() {
-  //     this.$axios
-  //       .get('http://localhost:8080/todo/list')
-  //       .then((res) => {
-  //         console.log(res.data);
-  //         // this.todoItems(res.data);
-  //         // console.log(this.todoItems);
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       })
-  //   }
-  // },
-  // mounted() {
-  //   this.getList();
-  // }
-  
+  data(){
+    return{
+      newTodays:""
+    }
+  },
+  methods: {
+    dayday(newToday){
+      // console.log(newToday);
+      this.newTodays = newToday;
+    },
+
+  }
   
 }
 </script>
@@ -80,10 +69,10 @@ button{
   box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
 }
 h1{
-        color: #2F3B52;
-        font-weight: 900;
-        margin: 2.5rem 0 1.5rem;
-    }
+  color: #2F3B52;
+  font-weight: 900;
+  margin: 2.5rem 0 1.5rem;
+}
 ul{
   list-style-type: none;
   padding-left: 0px;
@@ -112,5 +101,17 @@ li{
   li {
     width: 275px;
   }
+}
+.app-view{
+  width: 1200px;
+  display: flex;
+  margin: 0 auto;
+}
+.NowTime-page{
+  width: 50%;
+  
+}
+.Todo-page{
+  width: 50%;
 }
 </style>
