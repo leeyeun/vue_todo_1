@@ -1,11 +1,11 @@
 <template>
   <div>
     <div>list-day</div>
-    <div>dddd:{{dddd}}</div>
+    <div>newpropss:{{newpropss}}</div>
     <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
-      <ul v-for="(propsList) in propsList" :key="propsList.todoText" v-if="dddd || getPropsDay()">
+      <ul v-for="(newpropss) in newpropss" :key="newpropss.todoText">
         <li>
-          <span>{{propsList.todoText}}</span>
+          <span>{{newpropss.time}}{{newpropss.todoText}}</span>
         </li>
       </ul>
 <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
@@ -38,7 +38,7 @@
 <script>
 import axios from 'axios';
 export default {
-  props: ['dddd'],
+  props: ['dddd','newpropss'],
   
   data: function(){
     return{
@@ -77,19 +77,19 @@ export default {
       })
       this.toggleOnOff = true;
     },
-    getPropsDay(){
-      console.log('dddd',this.dddd);
-      axios.get(`http://localhost:8080/api/todo/list/day/select/${this.dddd}`)
-      .then((res) => {
-        console.log('propslist!!:', res.data);
-        // console.log('dddd',this.dddd);
-        this.propsList = res.data;
-        console.log('propsList',this.propsList);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-    },
+    // getPropsDay(){
+    //   console.log('dddd',this.dddd);
+    //   axios.get(`http://localhost:8080/api/todo/list/day/select/${this.dddd}`)
+    //   .then((res) => {
+    //     console.log('propslist!!:', res.data);
+    //     // console.log('dddd',this.dddd);
+    //     this.propsList = res.data;
+    //     console.log('propsList',this.propsList);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    // },
 
     getUpBtn(){
       this.toggleOnOff = false;
@@ -128,7 +128,7 @@ export default {
   },
   mounted(){
     this.getDay()
-    this.getPropsDay();
+    // this.getPropsDay();
   }
 }
 </script>

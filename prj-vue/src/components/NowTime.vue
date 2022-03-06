@@ -1,5 +1,6 @@
 <template>
     <div class="NowTime-page">
+        <h2>Calendar</h2>
         <div>{{today}}</div>
         <!-- <div>{{toooday}}</div> -->
         <h2>
@@ -8,28 +9,56 @@
             <a href="#" v-on:click="onClickNext(currentMonth)">▶</a>
         </h2>
         
-        <table class="table table-hover" style="margin: 0 auto;">
-            <thead>
-                <tr>
-                    <td v-for="(weekName, index) in weekNames" :key="index">
+        <div class="table table-hover" style="margin: 0 auto;">
+            <div>
+                <div class="weeks">
+                    <div v-for="(weekName, index) in weekNames" :key="index"  class="weeksname">
                         {{weekName}}
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
-                    <td v-for="(day, index2) in row" :key="index2" style="padding:20px;">
-                        <span v-if="isToday(currentYear, currentMonth, day)" class="rounded" v-on:click="dayClick(currentYear, currentMonth, day)">
-                            {{day}}
-                        </span>
-                        <span v-else :class="{dateclicked:calenClick}" v-on:click="dayClick(currentYear, currentMonth, day)">
-                            {{day}}
-                        </span>
-                        
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </div>
+            <div >
+                <div v-for="(row, index) in currentCalendarMatrix" :key="index" style="display:flex">
+                    <!-- eslint-disable vue/no-use-v-if-with-v-for,vue/no-confusing-v-for-v-if -->
+                    <div v-for="(day, index2) in row" :key="index2" class="allcolor" >
+                        <!-- <div v-for="(propsList, index3) in propsList" :key="propsList.todoText"> -->
+                            <div v-if="isToday(currentYear, currentMonth, day)" v-on:click="dayClick(currentYear, currentMonth, day)" class="rounded">
+                                {{day}}
+                            </div>
+                            
+                            <!-- <div v-else-if="groupdays.time" :class="{dateclicked:calenClick}" v-on:click="dayClick(currentYear, currentMonth, day)">
+                                {{day}}
+                                <i class="fa-solid fa-circle"></i>
+                            </div>
+                            <div v-else :class="{dateclicked:calenClick}" v-on:click="dayClick(currentYear, currentMonth, day)">
+                                {{day}}
+                                <i class="fa-solid fa-circle"></i>
+                            </div> -->
+                            <div v-else :class="{dateclicked:calenClick}" v-on:click="dayClick(currentYear, currentMonth, day)">
+                                {{day}}
+                                <!-- <i class="fa-solid fa-circle"></i> -->
+                            </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>propslist text</div>
+        <!-- <div v-for="(propsList, index) in propsList" :key="propsList.todoText">
+            <div>{{propsList.time}}</div>
+        </div> -->
+        <ul>
+            <li v-for="(propsList) in propsList" :key="propsList.todoText" class="shadow">
+                <span>{{propsList.time}}</span>
+                <span>{{propsList.todoText}} </span>
+            </li>
+        </ul>
+        <!-- <div>group by day</div>
+        <ul>
+            <li v-for="(groupdays) in groupdays" :key="groupdays.time">
+                <span>{{groupdays.time}}</span>
+            </li>
+        </ul> -->
     </div>
   
 </template>
@@ -48,6 +77,8 @@ export default {
         return {
             calenClick : false,
             ListAll : [],
+            propsList:[],
+            groupdays:[],
 
             weekNames : ["월","화","수", "목", "금", "토", "일"],
             rootYear: 1904,
@@ -62,40 +93,90 @@ export default {
 
             today : dayjs().format("YYYY-MM-DD"),
             toooday: moment().format('YYYY-MM-DD'),
-            
-            // mmmmm : String.currentMonth.padStart(2, "0"),
-
+            // dateeee : currentYear+'-'+currentMonth+'-'+day,
         }
     },
     mounted(){
         this.init();
-        // console.log('mmmmm',this.mmmmm)
+        this.groupbyDay();
     },
     methods: {
-        dayClick(currentYear, currentMonth, day){
-            
+        daylist(thisdate){
+            axios.get(`http://localhost:8080/api/todo/list/day/select/${thisdate}`)
+                .then((res) => {
+                    console.log('propslist!!:', res.data);
+                    console.log('thisdate:',thisdate);
+                    this.propsList = res.data;
+                    console.log('propsList',this.propsList);
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                // this.propsList[i].splice(i,1);
+        },
+        dayClick(currentYear, currentMonth, day ){
+
+            // var propsindex1 = propsList[index3].splice(index3, 1);
+            // console.log('propsindex1',propsindex1);
+
             var thisdate = currentYear+'-'+currentMonth+'-'+day;
             // console.log('thisdate',thisdate);
             this.$emit('todayProps', thisdate);
             
             this.calenClick = !this.calenClick;
             // console.log(this.calenClick);
-
-            axios
-                .get('http://localhost:8080/api/todo/all')
+            // if(this.groupbyDay){
+            //     console.log('ff', groupdays.time);
+            // }
+            console.log('groupdays',this.groupdays);
+            console.log('time',this.groupdays.time);
+            // axios
+            //     .get('http://localhost:8080/api/todo/all')
+            //     .then((res) => {
+            //     // console.log(res.data);
+            //     this.ListAll = res.data;
+            //     // console.log('all:', this.ListAll);
+            //     // console.log('todo :',this.todoItems);
+            //     // console.log('id',this.todoItems.todoText);
+            //     })
+            //     .catch((error) => {
+            //     console.log(error);
+            //     })
+            
+            axios.get(`http://localhost:8080/api/todo/list/day/select/${thisdate}`)
                 .then((res) => {
-                // console.log(res.data);
-                this.ListAll = res.data;
-                // console.log('all:', this.ListAll);
-                // console.log('todo :',this.todoItems);
-                // console.log('id',this.todoItems.todoText);
+                    console.log('propslist!!:', res.data);
+                    console.log('thisdate:',thisdate);
+                    this.propsList = res.data;
+                    console.log('propsList',this.propsList);
                 })
                 .catch((error) => {
-                console.log(error);
+                    console.log(error);
                 })
+            console.log('!!@@',this.propsList);
+            this.$emit('propsList',this.propsList);
             
         },
-
+        groupbyDay(){
+            axios.get('http://localhost:8080/api/todo/list/day')
+            .then((res) => {
+                console.log(res.data);
+                this.groupdays = res.data;
+                // this.days = res.data;
+                console.log('groupdays :',this.groupdays);
+                // console.log('id',this.todoItems.todoText);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            // console.log('@@@@ :',this.groupdays);
+        },
+        
+        // ddddddd(groupdays){
+        //     console.log('time',groupdays.time);
+        //     return groupdays.time;
+        // },
         init : function(){
             this.currentMonthStartWeekIndex = this.getStartWeek(this.currentYear, this.currentMonth);
             this.endOfDay = this.getEndOfDay(this.currentYear, this.currentMonth);
@@ -198,6 +279,7 @@ export default {
         isToday : function(year, month, day){
             let date = new Date();
             return year == date.getFullYear() && month == date.getMonth()+1 && day == date.getDate();
+            
         }
         // getFirstAndLastDate(month, year) {
         //     const lastMonthLastDate = new Date(year, month, 0).getDate();
@@ -216,13 +298,28 @@ export default {
 </script>
 
 <style>
+.weeks{
+
+    display: flex;
+}
+.weeksname{
+    width: 60px;
+    padding: 20px;
+}
+.allcolor{
+    width: 60px;
+    /* background-color: rgb(200, 221, 240); */
+    padding:20px;
+}
 .rounded {
-    -moz-border-radius:20px 20px 20px 20px; 
+    /* -moz-border-radius:20px 20px 20px 20px; 
     border-radius:20px 20px 20px 20px;
     border:solid 1px #ffffff;
     background-color:#2b6bd1;
     padding:10px;
-    color:#ffffff;
+    color:#ffffff; */
+    background-color: rgb(228, 205, 176);
+    border-radius: 50%;
 }
 .dateclicked {
     /* background-color: #dadada;
@@ -232,5 +329,14 @@ export default {
     padding:10px;
     color:#ffffff; */
     color: red;
+}
+.thisday{
+    border-right: 50%;
+    background-color: red;
+    width: 10px;
+    height: 10px;
+}
+.circlesmall{
+    color: black;
 }
 </style>

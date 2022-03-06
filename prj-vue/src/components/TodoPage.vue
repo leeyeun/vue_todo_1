@@ -6,13 +6,14 @@
         <!-- <TodoInput></TodoInput>
         <TodoList></TodoList>
         <TodoFooter></TodoFooter> -->
-        <div>{{today}}</div>
-        <div>daydata:{{daydata}}</div>
-        <TodoInput v-if="daydata"></TodoInput>
-        <TodoList v-if="daydata"></TodoList>
-        <LastTodo v-if="daydata" :dddd="daydata"></LastTodo>
-        
-        <TodoFooter v-if="daydata"></TodoFooter>
+        <h2>To Do List</h2>
+        <div>today:{{today}}</div>
+        <!-- <div>daydata:{{daydata}}</div> -->
+        <TodoInput v-if="newItem"></TodoInput>
+        <TodoList v-if="newItem"></TodoList>
+        <!-- <LastTodo v-if="newItem" :dddd="daydata" v-bind:newpropss="newItem"></LastTodo> -->
+        <!-- <LastTodo v-if="newItem" v-bind:newpropss="newItem"></LastTodo> -->
+        <TodoFooter v-if="newItem"></TodoFooter>
         <!-- <LastTodo></LastTodo> -->
   </div>
 </template>
@@ -22,17 +23,17 @@
 import TodoInput from '../components/TodoInput.vue'
 import TodoList from '../components/TodoList.vue';
 import TodoFooter from '../components/TodoFooter.vue';
-import LastTodo from '../components/LastTodo.vue';
+// import LastTodo from '../components/LastTodo.vue';
 import dayjs from 'dayjs';
 
 export default {
-    props: ['daydata'],
+    props: ['daydata', 'newItem'],
 
     components: {
         TodoInput,
         TodoList,
         TodoFooter,
-        LastTodo,
+        // LastTodo,
     },
     data(){
         return{

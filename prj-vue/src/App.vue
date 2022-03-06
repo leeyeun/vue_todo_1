@@ -1,45 +1,26 @@
 <template>
   <div id="app">
-    <!-- <router-link to="/login">LoginPage</router-link> -->
-    <!-- <h1>To Do List</h1> -->
     <div class="app-view">
-      <NowTime v-on:todayProps="dayday"></NowTime>
-      <TodoPage v-bind:daydata="newTodays"></TodoPage>
-      <!-- <TodoPage>
-        <router-view></router-view>
-      </TodoPage> -->
+      <NowTime v-on:todayProps="dayday" v-on:propsList="listprops"></NowTime>
+      <TodoPage v-bind:daydata="newTodays" v-bind:newItem="newList"></TodoPage>
     </div>
-    
-    <!-- <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
-    <LastTodo></LastTodo> -->
-    
-    
   </div>
 </template>
 
 <script>
 /*eslint-disable */
 import NowTime from './components/NowTime.vue';
-// import TodoInput from './components/TodoInput.vue';
-// import TodoList from './components/TodoList.vue';
-// import TodoFooter from './components/TodoFooter.vue';
-// import LastTodo from './components/LastTodo.vue';
 import TodoPage from './components/TodoPage.vue';
 export default {
   
   components: {
     NowTime,
     TodoPage
-    // TodoInput,
-    // TodoList,
-    // TodoFooter,
-    // LastTodo
   },
   data(){
     return{
-      newTodays:""
+      newTodays:"",
+      newList:[],
     }
   },
   methods: {
@@ -47,6 +28,10 @@ export default {
       // console.log(newToday);
       this.newTodays = newToday;
     },
+    listprops(newone){
+
+      this.newList = newone;
+    }
 
   }
   

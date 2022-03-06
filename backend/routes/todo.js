@@ -29,8 +29,19 @@ router.get('/todo/all', (req, res) => {
     })
 });
 //group by
+// router.get('/todo/list/day', (req, res) => {
+//     const sqlQuery = "SELECT id, todoText, DATE_FORMAT(time,'%y-%m-%d') as time FROM todolist group by time having time != DATE_FORMAT(now(),'%y-%m-%d');";
+//     db.query(sqlQuery, (err, result) => {
+//         if (!err) {
+//             console.log('The solution is : ', result);
+//             res.send(result);
+//         }
+//         else
+//             console.log('Error while performing Query', err);
+//     })
+// });
 router.get('/todo/list/day', (req, res) => {
-    const sqlQuery = "SELECT id, todoText, DATE_FORMAT(time,'%y-%m-%d') as time FROM todolist group by time having time != DATE_FORMAT(now(),'%y-%m-%d');";
+    const sqlQuery = "SELECT id, todoText, DATE_FORMAT(time,'%y-%m-%d') as time FROM todolist group by time;";
     db.query(sqlQuery, (err, result) => {
         if (!err) {
             console.log('The solution is : ', result);
