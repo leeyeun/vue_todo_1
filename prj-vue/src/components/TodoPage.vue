@@ -7,7 +7,7 @@
         <TodoList></TodoList>
         <TodoFooter></TodoFooter> -->
         <h2>To Do List</h2>
-        <div>today:{{today}}</div>
+        <h2>{{today}}</h2>
         <!-- <div>daydata:{{daydata}}</div> -->
         <TodoInput v-if="newItem"></TodoInput>
         <TodoList v-if="newItem"></TodoList>

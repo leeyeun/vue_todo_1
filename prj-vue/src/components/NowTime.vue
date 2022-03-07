@@ -1,7 +1,6 @@
 <template>
     <div class="NowTime-page">
         <h2>Calendar</h2>
-        <div>{{today}}</div>
         <!-- <div>{{toooday}}</div> -->
         <h2>
             <a href="#" v-on:click="onClickPrev(currentMonth)">◀</a>
@@ -43,7 +42,6 @@
                 </div>
             </div>
         </div>
-        <div>propslist text</div>
         <!-- <div v-for="(propsList, index) in propsList" :key="propsList.todoText">
             <div>{{propsList.time}}</div>
         </div> -->
@@ -298,6 +296,9 @@ export default {
 </script>
 
 <style>
+a{
+    text-decoration: none;
+}
 .weeks{
 
     display: flex;

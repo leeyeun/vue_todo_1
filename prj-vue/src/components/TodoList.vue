@@ -44,7 +44,6 @@ export default {
     
     removeTodo: function(todoList) {
       // console.log('id',todoList.id);
-      alert(`선택한 글번호가 ${todoList.id} 맞습니까?`);
       axios.post(`http://localhost:8080/api/todo/delete/${todoList.id}`)
       .then(() => {
         alert('삭제되었습니다.');
